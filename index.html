@@ -59,13 +59,22 @@
 				background: transparent;
 				display: flex;
 				align-items: center;
-				gap: 2rem;
+				justify-content: space-between;
+				gap: .5rem;
 
 				position: fixed;
 				width: 100%;
 				top: 0;
 
 				transition: background .2s;
+			}
+
+			nav .nav-links {
+				list-style: none;
+				padding: 0;
+				display: flex;
+				align-items: center;
+				gap: 1rem;
 			}
 
 			nav.scroll { background: var(--back-nav); }
@@ -104,8 +113,8 @@
 				font-size: 1.2rem;
 				text-align: center;
 				background:
-					linear-gradient(var(--back-header-fade), var(--back-header-fade)),
-					center/cover url(https://media3.giphy.com/media/mi6DsSSNKDbUY/giphy.gif);
+					linear-gradient(var(--back-header-fade), var(--back-header-fade))/*,
+					center/cover url(https://media3.giphy.com/media/mi6DsSSNKDbUY/giphy.gif)*/;
 
 				height: 100vh;
 				display: flex;
@@ -153,10 +162,11 @@
 	<body>
 		<nav>
 			<a href="#" class="logo"><img src="logo-inline.svg"/></a>
-			<div style="flex:1"></div>
-			<a href="#">Projects &amp; Research</a>
-			<a href="#about">About us</a>
-			<a href="#">Contact</a>
+			<ul class="nav-links">
+				<li><a href="#">Projects &amp; Research</a></li>
+				<li><a href="#about">About us</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
 		</nav>
 
 		<header>
