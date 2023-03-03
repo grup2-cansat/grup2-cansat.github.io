@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css"/>
+		<link rel="icon" href="logo.svg"/>
+
+		<title>Grup 2</title>
+		<meta name="author" content="Grup 2"/>
+
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+			}
+
+			body {
+				font: 100%/1.4 'Inter', sans-serif;
+				color: var(--text);
+				background: var(--back);
+				min-height: calc(200vh - 3rem);
+
+				display: flex;
+				flex-direction: column;
+
+				--text: #000;
+				--text-dim: #888;
+
+				--back: #fff;
+				--back-nav: #eee;
+				--back-header: #eee;
+				--back-header-fade: #eee6;
+				--back-footer: #eee;
+
+				--size-logo: 3rem;
+				--size-logo-large: 5rem;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				body {
+					--text: #eee;
+					--text-dim: #aaa;
+
+					--back: #222;
+					--back-nav: #000;
+					--back-header: #000;
+					--back-header-fade: #0006;
+					--back-footer: #000;
+				}
+			}
+
+			@media (prefers-reduced-motion: no-preference) {
+				html { scroll-behavior: smooth; }
+			}
+
+			nav {
+				padding: .5rem 1rem;
+				background: transparent;
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+
+				position: fixed;
+				width: 100%;
+				top: 0;
+
+				transition: background .2s;
+			}
+
+			nav.scroll { background: var(--back-nav); }
+			nav.scroll img { height: var(--size-logo); }
+
+			nav img {
+				height: var(--size-logo-large);
+				transition: height .2s;
+			}
+
+			nav a:not(.logo) {
+				color: inherit;
+				text-decoration: none;
+				font-weight: bold;
+				position: relative;
+			}
+
+			nav a:not(.logo)::before {
+				content: '';
+				position: absolute;
+				z-index: -1;
+				bottom: 2px;
+				width: 100%;
+				height: 2px;
+				background: currentcolor;
+
+				transform: scaleX(0);
+				transform-origin: right;
+				transition: transform .5s;
+			}
+
+			nav a:hover::before { transform: scaleX(1); transform-origin: left; }
+
+			header {
+				padding: 2rem max(5rem, calc(50vw - 30ch));
+				font-size: 1.2rem;
+				text-align: center;
+				background:
+					linear-gradient(var(--back-header-fade), var(--back-header-fade)),
+					center/cover url(https://media3.giphy.com/media/mi6DsSSNKDbUY/giphy.gif);
+
+				height: 100vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			header h1 { font-size: 3em; }
+
+			:is(main, header) * + * { margin-top: 1em; }
+			:is(h1, h2) + * { margin-top: .5em; }
+
+			main {
+				padding: 2rem clamp(2rem, 8vw, 6rem);
+				max-width: 80ch;
+				flex: 1;
+			}
+
+			:is(h1, h2) { scroll-margin-top: 3em; }
+
+			footer {
+				background: var(--back-footer);
+				padding: 2rem;
+				display: flex;
+				justify-content: space-between;
+			}
+
+			button {
+				width: max-content;
+				font: inherit;
+				font-weight: bold;
+				padding: 1rem 2rem;
+
+				background: transparent;
+				color: inherit;
+				border: 2px solid currentcolor;
+
+				transition: box-shadow .5s;
+			}
+
+			button:hover { box-shadow: 10px 5px var(--text-dim); }
+		</style>
+	</head>
+	<body>
+		<nav>
+			<a href="#" class="logo"><img src="logo-inline.svg"/></a>
+			<div style="flex:1"></div>
+			<a href="#">Projects &amp; Research</a>
+			<a href="#about">About us</a>
+			<a href="#">Contact</a>
+		</nav>
+
+		<header>
+			<h1>Grup 2</h1>
+			<p>Grup 2 is commited to advancing autonomous spaceflight knowledge.</p>
+			<p>We are an aeronautics organisation dedicated to research in advanced spaceflight missions, including autonomous launch and recovery systems.</p>
+			<button>Learn more</button>
+		</header>
+
+		<main>
+			<h1 id="about">About us and our mission</h1>
+			<p>Grup 2, integrated by four seventeen year-old students from Binissalem, Mallorca, has been created with the aim to achieve the CanSat project goals, endorsed by the ESA (European Space Agency). Looking forward to developing an efficient prototype, our main interest is learning during the procedure. From coding a suitable structure, to designing and constructing a functional design, every piece of work has been precisely calculated for an adequate suiting to the proposed conditions.</p>
+
+			<p>Within this project, two important clauses are to be fulfilled. Two different missions, two distinct projects: both in a can-sized structure, and yet both willing to impress.</p>
+
+			<h1>Current progress on the project</h2>
+			<p>The CanSat project is currently still work in progress.</p>
+			<p>We are actively working on finishing and refining our first prototype, which will be presented and assessed at the campus of the University of the Balearic Islands in March.</p>
+
+			<h2>Technical details</h2>
+			<p>We are currently drafting our first preliminary report, in which we will provide an outline of our work to the date.</p>
+			<p>The report is expected to be finished and released a the end of February 2023.</p>
+
+			<h1>Support us</h2>
+			<p>Don't.</p>
+			<p>We don't need your support.</p>
+		</main>
+
+		<footer>
+			<p>
+				&copy; 2023 <b>Grup 2</b> <br/>
+				&mdash; The future in a can.
+			</p>
+			<address>
+				Grup 2 &ndash; IES Binissalem <br/>
+				C/ Andreu Pol «Niuer», Batle s/n <br/>
+				07350 Binissalem (Illes Balears)
+			</address>
+		</footer>
+
+		<script>
+			const nav = document.querySelector('nav');
+			const header = document.querySelector('header');
+			const nav_height = nav.getBoundingClientRect().height;
+
+			document.addEventListener('scroll', () => {
+				if (window.scrollY >= window.innerHeight - nav_height)
+					nav.classList.add('scroll');
+				else
+					nav.classList.remove('scroll');
+			});
+
+			// use IntersectionObserver
+		</script>
+	</body>
+</html>
