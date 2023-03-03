@@ -74,21 +74,14 @@ nav a:not(.logo) {
 	position: relative;
 }
 
-nav a:not(.logo)::before {
-	content: '';
-	position: absolute;
-	z-index: -1;
-	bottom: 2px;
-	width: 100%;
-	height: 2px;
-	background: currentcolor;
-
-	transform: scaleX(0);
-	transform-origin: right;
-	transition: transform .5s;
+nav a:not(.logo) {
+	background: linear-gradient(currentcolor, currentcolor) no-repeat;
+	background-size: 0 2px;
+	background-position: bottom left;
+	transition: background-size .5s;
 }
 
-nav a:hover::before { transform: scaleX(1); transform-origin: left; }
+nav a:not(.logo):hover { background-size: 100% 2px; }
 
 header {
 	padding: 2rem max(5rem, calc(50vw - 30ch));
