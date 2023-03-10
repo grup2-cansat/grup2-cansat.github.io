@@ -199,7 +199,8 @@
 				renderer.render(scene, camera);
 				requestAnimationFrame(loop);
 			};
-			requestAnimationFrame(loop);
+
+			addEventListener('load', () => requestAnimationFrame(loop));
 		</script>
 	</body>
 </html>
