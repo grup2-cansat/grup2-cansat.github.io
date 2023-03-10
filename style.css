@@ -51,6 +51,9 @@ nav {
 	transition: background .2s;
 }
 
+nav + main { margin-top: calc(.5rem + var(--size-logo-large)); }
+nav.scroll + main { margin-top: calc(.5rem + var(--size-logo)); }
+
 nav .nav-links {
 	list-style: none;
 	padding: 0;
