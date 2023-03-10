@@ -13,6 +13,14 @@
 
 		<style>
 			* { box-sizing: border-box; margin: 0; }
+
+			#renderer-canvas {
+				width: 100% !important;
+				height: 100% !important;
+				position: absolute;
+				top: -1.2rem;
+				z-index: -99;
+			}
 		</style>
 	</head>
 	<body>
@@ -76,6 +84,122 @@
 			});
 
 			// use IntersectionObserver
+		</script>
+
+		<script type="module">
+			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+			const params = {
+				n_lines: 8,
+				viewport: {
+					fov: 70,
+					factor: 1.2
+				},
+				can: {
+					radius: 1,
+					height: 4
+				},
+				chute: {
+					radius: 10,
+					opening: THREE.MathUtils.degToRad(70),
+					offset: 15
+				}
+			};
+
+			const axis = {
+				x: new THREE.Vector3(1, 0, 0),
+				y: new THREE.Vector3(0, 1, 0),
+				z: new THREE.Vector3(0, 0, 1)
+			};
+
+			const renderer = new THREE.WebGLRenderer();
+			document.querySelector('header').append(renderer.domElement);
+			renderer.domElement.id = 'renderer-canvas';
+
+			let canvas_dimen = renderer.domElement.getBoundingClientRect();
+			renderer.setSize(canvas_dimen.width, canvas_dimen.height);
+			
+			const scene = new THREE.Scene();
+			const camera = new THREE.PerspectiveCamera(params.viewport.fov, canvas_dimen.width / canvas_dimen.height, 0.1, 1000);
+
+			addEventListener('resize', () => {
+				canvas_dimen = renderer.domElement.getBoundingClientRect();
+
+				camera.aspect = canvas_dimen.width / canvas_dimen.height;
+				camera.updateProjectionMatrix();
+				renderer.setSize(canvas_dimen.width, canvas_dimen.height);
+			});
+
+			const line_material = new THREE.LineBasicMaterial();
+			const make = geometry => new THREE.LineSegments(new THREE.WireframeGeometry(geometry), line_material);
+			const zip = (a, b) => a.map((v, i) => [v, b[i]]);
+
+			const set_colors = query => {
+				if (query.matches)
+					scene.background = new THREE.Color(0, 0, 0);
+				else
+					scene.background = new THREE.Color(1, 1, 1);
+
+				line_material.color = new THREE.Color(1, 1, 1).sub(scene.background);
+			};
+
+			const color_query = matchMedia('(prefers-color-scheme: dark)');
+			color_query.addEventListener('change', set_colors);
+			set_colors(color_query);
+
+			const generate_points = (n, r) => {
+				const points = [];
+
+				for (let i = 0; i < n; i++) {
+					const angle = 2 * Math.PI / n * i;
+					const vec = new THREE.Vector3().setFromSphericalCoords(r, Math.PI / 2, angle);
+					points.push(vec);
+				}
+
+				return points;
+			};
+
+			const can = make(new THREE.CylinderGeometry(params.can.radius, params.can.radius, params.can.height));
+			const chute = make(new THREE.SphereGeometry(params.chute.radius, 32, 16, 0, 2 * Math.PI, 0, params.chute.opening));
+			chute.position.y = params.chute.offset;
+
+			const lines_origin = new THREE.Vector3(0, params.can.height / 2, 0);
+			const lines = zip(
+				generate_points(params.n_lines, params.chute.radius * Math.sin(params.chute.opening)),
+				generate_points(params.n_lines, params.can.radius)
+			).map(([top, bot]) => {
+				const ps = [bot.setY(params.can.height / 2), top.setY(params.chute.offset + params.chute.radius * Math.cos(params.chute.opening))];
+				const geom = new THREE.BufferGeometry().setFromPoints(ps);
+				return make(geom);
+			});
+
+			const satellite = new THREE.Group();
+			satellite.add(can, chute, ...lines);
+
+			const bbox = new THREE.Box3().setFromObject(satellite);
+			const vert_extent = Math.abs(bbox.min.y) + Math.abs(bbox.max.y);
+			const center = new THREE.Vector3();
+			bbox.getCenter(center);
+
+			scene.add(satellite);
+			camera.position.set(0, center.y, vert_extent * params.viewport.factor / Math.tan(params.viewport.fov));
+
+			const loop = t => {
+				satellite.position.x = 3 * Math.sin(t / 1e3);
+				satellite.position.y = 0.5 * Math.cos(t / 1e3) + Math.max(0, 6.2e3 - t / 1e0) ** 2 / 1e6;
+
+				const k = t => Math.min(1, 1 - (1 - t / 2e4) ** 3);
+				const euler = new THREE.Euler(
+					0.2 * k(t) * Math.sin(t / 8e4),
+					k(t + 5e3) * t * 8e-4,
+					0.2 * k(t) * Math.sin(t / 1e3),
+					'ZXY');
+				satellite.setRotationFromEuler(euler);
+
+				renderer.render(scene, camera);
+				requestAnimationFrame(loop);
+			};
+			requestAnimationFrame(loop);
 		</script>
 	</body>
 </html>
