@@ -102,6 +102,7 @@ header {
 }
 
 header h1 { font-size: 3em; }
+header button { border-width: 2px; }
 
 :is(main, header) * + * { margin-top: 1em; }
 :is(h1, h2) + * { margin-top: .5em; }
@@ -110,6 +111,26 @@ main {
 	padding: 2rem clamp(2rem, 8vw, 6rem);
 	max-width: 80ch;
 	flex: 1;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--text-dim);
+	padding: 1rem;
+	gap: .5rem;
+}
+
+label + input { margin-top: -.5rem; }
+label { font-weight: bold; }
+input {
+	font: inherit;
+	padding: .5rem 1rem;
+}
+
+form button {
+	width: 100%;
+	padding: .5rem 1rem;
 }
 
 :is(h1, h2) { scroll-margin-top: 3em; }
@@ -129,9 +150,12 @@ button {
 
 	background: transparent;
 	color: inherit;
-	border: 2px solid currentcolor;
+	border: 1px solid currentcolor;
 
 	transition: box-shadow .5s;
 }
 
 button:hover { box-shadow: 10px 5px var(--text-dim); }
+button:focus { border-width: 2px; }
+
+li { margin-top: .5rem; }
