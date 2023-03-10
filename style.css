@@ -121,9 +121,10 @@ form {
 	gap: .5rem;
 }
 
-label + input { margin-top: -.5rem; }
+label + :is(input, textarea) { margin-top: -.5rem; }
 label { font-weight: bold; }
-input {
+textarea { resize: vertical; }
+:is(input, textarea) {
 	font: inherit;
 	background: transparent;
 	border: 1px solid currentcolor;
@@ -131,7 +132,7 @@ input {
 	padding: .5rem 1rem;
 }
 
-input::placeholder { color: var(--text-dim); }
+::placeholder { color: var(--text-dim); }
 
 form button {
 	width: 100%;
