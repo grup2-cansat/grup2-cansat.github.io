@@ -125,8 +125,13 @@ label + input { margin-top: -.5rem; }
 label { font-weight: bold; }
 input {
 	font: inherit;
+	background: transparent;
+	border: 1px solid currentcolor;
+	color: currentcolor;
 	padding: .5rem 1rem;
 }
+
+input::placeholder { color: var(--text-dim); }
 
 form button {
 	width: 100%;
@@ -159,3 +164,5 @@ button:hover { box-shadow: 10px 5px var(--text-dim); }
 button:focus { border-width: 2px; }
 
 li { margin-top: .5rem; }
+
+a { color-scheme: dark light; }
