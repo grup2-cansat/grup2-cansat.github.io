@@ -90,9 +90,7 @@ header {
 	padding: 2rem max(5rem, calc(50vw - 30ch));
 	font-size: 1.2rem;
 	text-align: center;
-	background:
-		linear-gradient(var(--back-header-fade), var(--back-header-fade))/*,
-		center/cover url(https://media3.giphy.com/media/mi6DsSSNKDbUY/giphy.gif)*/;
+	background: linear-gradient(var(--back-header-fade), var(--back-header-fade));
 
 	height: 100vh;
 	display: flex;
@@ -178,6 +176,7 @@ button::before {
 	transform-origin: bottom;
 	transition: all .5s;
 }
+
 button:hover::before { transform: scaleY(1); }
 
 li { margin-top: .5rem; }
