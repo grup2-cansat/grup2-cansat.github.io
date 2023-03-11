@@ -25,7 +25,7 @@
 		</style>
 	</head>
 	<body>
-		<nav>
+		<nav class="big">
 			<a href="/" class="logo"><img src="/img/logo-inline.svg" alt=""/></a>
 			<ul class="nav-links">
 				<li><a href="/">Projects <span class="header-maybe">&amp; Research</span></a></li>
@@ -93,9 +93,9 @@
 				nav.style.setProperty('--size-logo', s + 'em');
 
 				if (window.scrollY >= header_height - nav_height)
-					nav.classList.add('scroll');
+					nav.classList.remove('big');
 				else
-					nav.classList.remove('scroll');
+					nav.classList.add('big');
 			});
 		</script>
 

@@ -17,7 +17,7 @@ body {
 
 	--size-logo-min: 3rem;
 	--size-logo-max: 5rem;
-	--size-logo: var(--size-logo-max);
+	--size-logo: var(--size-logo-min);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,8 +38,8 @@ body {
 }
 
 nav {
+	background: var(--back-nav);
 	padding: .5rem 1rem;
-	background: transparent;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -53,8 +53,13 @@ nav {
 	transition: background .2s;
 }
 
+nav.big {
+	background: transparent;
+	--size-logo: var(--size-logo-max);
+}
+
+nav.big + main { margin-top: calc(.5rem + var(--size-logo)); }
 nav + main { margin-top: calc(.5rem + var(--size-logo)); }
-nav.scroll + main { margin-top: calc(.5rem + var(--size-logo)); }
 
 nav .nav-links {
 	list-style: none;
@@ -64,11 +69,9 @@ nav .nav-links {
 	gap: 1rem;
 }
 
-nav.scroll { background: var(--back-nav); }
-
 nav img {
 	height: var(--size-logo);
-	transition: height .1s;
+	transition: height .4s;
 }
 
 nav a:not(.logo) {
