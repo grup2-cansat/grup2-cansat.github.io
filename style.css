@@ -15,8 +15,9 @@ body {
 	--back-header-fade: #eee6;
 	--back-footer: #eee;
 
-	--size-logo: 3rem;
-	--size-logo-large: 5rem;
+	--size-logo-min: 3rem;
+	--size-logo-max: 5rem;
+	--size-logo: var(--size-logo-max);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,7 +52,7 @@ nav {
 	transition: background .2s;
 }
 
-nav + main { margin-top: calc(.5rem + var(--size-logo-large)); }
+nav + main { margin-top: calc(.5rem + var(--size-logo)); }
 nav.scroll + main { margin-top: calc(.5rem + var(--size-logo)); }
 
 nav .nav-links {
@@ -63,10 +64,9 @@ nav .nav-links {
 }
 
 nav.scroll { background: var(--back-nav); }
-nav.scroll img { height: var(--size-logo); }
 
 nav img {
-	height: var(--size-logo-large);
+	height: var(--size-logo);
 	transition: height .2s;
 }
 

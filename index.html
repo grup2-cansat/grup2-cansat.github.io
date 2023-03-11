@@ -75,16 +75,28 @@
 		<script>
 			const nav = document.querySelector('nav');
 			const header = document.querySelector('header');
-			const nav_height = nav.getBoundingClientRect().height;
+
+			const clamp = (a, x, b) => Math.max(a, Math.min(x, b));
+			const em = parseInt(getComputedStyle(document.body).fontSize);
+
+			const size_max = parseFloat(getComputedStyle(nav).getPropertyValue('--size-logo-max'));
+			const size_min = parseFloat(getComputedStyle(nav).getPropertyValue('--size-logo-min'));
 
 			document.addEventListener('scroll', () => {
-				if (window.scrollY >= window.innerHeight - nav_height)
+				const nav_height = nav.getBoundingClientRect().height;
+				const header_height = header.getBoundingClientRect().height;
+				const overlap = window.scrollY - header_height + nav_height;
+
+				// using clamp() and calc() in injected CSS seems not to work correctly
+				//const s = `calc(var(--size-logo-max) - clamp(0, ${overlap}px, var(--size-logo-min)))`;
+				const s = clamp(size_min, size_max - overlap / em, size_max);
+				nav.style.setProperty('--size-logo', s + 'em');
+
+				if (window.scrollY >= header_height - nav_height)
 					nav.classList.add('scroll');
 				else
 					nav.classList.remove('scroll');
 			});
-
-			// use IntersectionObserver
 		</script>
 
 		<script type="module" src="/cansat.js"></script>
