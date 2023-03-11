@@ -46,6 +46,7 @@ nav {
 	gap: .5rem;
 
 	position: fixed;
+	z-index: 1;
 	width: 100%;
 	top: 0;
 
@@ -67,7 +68,7 @@ nav.scroll { background: var(--back-nav); }
 
 nav img {
 	height: var(--size-logo);
-	transition: height .2s;
+	transition: height .1s;
 }
 
 nav a:not(.logo) {
