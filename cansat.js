@@ -6,6 +6,16 @@ const params = {
 		fov: 70,
 		factor: 1.2
 	},
+	colors: {
+		dark: {
+			back: new THREE.Color(0, 0, 0),
+			lines: new THREE.Color(0x9e9eff)
+		},
+		light: {
+			back: new THREE.Color(1, 1, 1),
+			lines: new THREE.Color(0x0000ee)
+		}
+	},
 	can: {
 		radius: 1,
 		height: 4
@@ -46,12 +56,10 @@ const make = geometry => new THREE.LineSegments(new THREE.WireframeGeometry(geom
 const zip = (a, b) => a.map((v, i) => [v, b[i]]);
 
 const set_colors = query => {
-	if (query.matches)
-		scene.background = new THREE.Color(0, 0, 0);
-	else
-		scene.background = new THREE.Color(1, 1, 1);
+	const mode = query.matches ? 'dark' : 'light';
 
-	line_material.color = new THREE.Color(1, 1, 1).sub(scene.background);
+	scene.background = params.colors[mode].back;
+	line_material.color = params.colors[mode].lines;
 };
 
 const color_query = matchMedia('(prefers-color-scheme: dark)');
