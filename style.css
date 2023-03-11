@@ -163,12 +163,22 @@ button {
 	background: transparent;
 	color: inherit;
 	border: 1px solid currentcolor;
-
-	transition: box-shadow .5s;
+	position: relative;
 }
 
-button:hover { box-shadow: 10px 5px var(--text-dim); }
-button:focus { border-width: 2px; }
+button::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: calc(100% - 0px);
+	height: calc(100% - 0px);
+	backdrop-filter: invert(100%);
+	transform: scaleY(0);
+	transform-origin: bottom;
+	transition: all .5s;
+}
+button:hover::before { transform: scaleY(1); }
 
 li { margin-top: .5rem; }
 
