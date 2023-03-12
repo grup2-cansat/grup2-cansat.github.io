@@ -156,6 +156,13 @@ footer {
 	justify-content: space-between;
 }
 
+img { max-width: 100%; }
+figcaption { font-style: italic; margin-top: 0; }
+img.ratio-16-9 {
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+}
+
 button {
 	width: max-content;
 	font: inherit;
