@@ -10,13 +10,13 @@ const params = {
 		current: {},
 		dark: {
 			back: new THREE.Color(0x293244),
-			lines: new THREE.Color(1, 1, 1),
+			lines: new THREE.Color(0xaaaaaa),
 			can: new THREE.Color(0x517acc),
 			chute: new THREE.Color(0xe5ddc0)
 		},
 		light: {
 			back: new THREE.Color(0xced6e5),
-			lines: new THREE.Color(0, 0, 0),
+			lines: new THREE.Color(0x888888),
 			can: new THREE.Color(0x9db9f2),
 			chute: new THREE.Color(0xe5dec3)
 		}
