@@ -21,6 +21,10 @@ const params = {
 			chute: new THREE.Color(0xe5dec3)
 		}
 	},
+	lights: {
+		current: [],
+		dark: [0.3, 0.6],
+		light: [0.6, 1]
 	},
 	materials: {},
 	can: {
@@ -137,10 +141,18 @@ const vert_extent = Math.abs(bbox.min.y) + Math.abs(bbox.max.y);
 const center = new THREE.Vector3();
 bbox.getCenter(center);
 
-const ambient = new THREE.AmbientLight(0xffffff, 0.2);
-const point = new THREE.PointLight(0xeeeeff, 0.9);
-point.position.set(20, 30, 10);
-point.castShadows = true;
+const p1 = new THREE.PointLight(0xffffff, params.lights.current[0]);
+p1.position.set(20, -25, 20);
+p1.castShadows = true;
+
+const p2 = new THREE.PointLight(0xffffff, params.lights.current[1]);
+p2.position.set(-30, 35, 15);
+p2.castShadows = true;
+
+on_theme_change(() => {
+	p1.intensity = params.lights.current[0];
+	p2.intensity = params.lights.current[1];
+});
 
 for (const object of [can, chute, ...lines]) {
 	object.castShadow = true;
@@ -149,7 +161,7 @@ for (const object of [can, chute, ...lines]) {
 
 renderer.shadowMap.enabled = true;
 
-scene.add(satellite, ambient, point);
+scene.add(satellite, p1, p2);
 camera.position.set(0, center.y, vert_extent * params.viewport.factor / Math.tan(params.viewport.fov));
 
 let t0 = null;
