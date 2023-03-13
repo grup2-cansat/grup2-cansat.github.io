@@ -8,12 +8,12 @@ const params = {
 	},
 	colors: {
 		dark: {
-			back: new THREE.Color(0, 0, 0),
-			lines: new THREE.Color(0x9e9eff)
+			back: new THREE.Color(0x37538b),
+			lines: new THREE.Color(1, 1, 1)
 		},
 		light: {
 			back: new THREE.Color(1, 1, 1),
-			lines: new THREE.Color(0x0000ee)
+			lines: new THREE.Color(0x2d4472)
 		}
 	},
 	can: {
@@ -33,12 +33,13 @@ const axis = {
 	z: new THREE.Vector3(0, 0, 1)
 };
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: false });
 document.querySelector('header').append(renderer.domElement);
 renderer.domElement.id = 'renderer-canvas';
 
 let canvas_dimen = renderer.domElement.getBoundingClientRect();
-renderer.setSize(canvas_dimen.width, canvas_dimen.height);
+const scale = 1;
+renderer.setSize(scale * canvas_dimen.width, scale * canvas_dimen.height);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(params.viewport.fov, canvas_dimen.width / canvas_dimen.height, 0.1, 1000);
@@ -51,7 +52,7 @@ addEventListener('resize', () => {
 	renderer.setSize(canvas_dimen.width, canvas_dimen.height);
 });
 
-const line_material = new THREE.LineBasicMaterial();
+const line_material = new THREE.LineBasicMaterial({ linewidth: 1 * scale });
 const make = geometry => new THREE.LineSegments(new THREE.WireframeGeometry(geometry), line_material);
 const zip = (a, b) => a.map((v, i) => [v, b[i]]);
 
