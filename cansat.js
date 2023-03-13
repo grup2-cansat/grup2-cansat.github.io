@@ -9,18 +9,20 @@ const params = {
 	colors: {
 		current: {},
 		dark: {
-			back: new THREE.Color(0x37538b),
-			lines: new THREE.Color(1, 1, 1)
+			back: new THREE.Color(0x293244),
+			lines: new THREE.Color(1, 1, 1),
+			can: new THREE.Color(0x517acc),
+			chute: new THREE.Color(0xe5ddc0)
 		},
 		light: {
-			back: new THREE.Color(1, 1, 1),
-			lines: new THREE.Color(0, 0, 0)
+			back: new THREE.Color(0xced6e5),
+			lines: new THREE.Color(0, 0, 0),
+			can: new THREE.Color(0x9db9f2),
+			chute: new THREE.Color(0xe5dec3)
 		}
 	},
-	materials: {
-		can: new THREE.MeshStandardMaterial({ color: 0x2d4472, flatShading: true }),
-		chute: new THREE.MeshStandardMaterial({ color: 0xe5ddc0, flatShading: true, side: THREE.DoubleSide })
 	},
+	materials: {},
 	can: {
 		radius: 1,
 		height: 4
@@ -62,25 +64,37 @@ const set_colors = query => {
 
 	scene.background = params.colors[mode].back;
 	params.colors.current = params.colors[mode];
+	params.lights.current = params.lights[mode];
 
 	for (const [material, color_key] of set_colors.materials)
 		material.color = params.colors.current[color_key];
+
+	for (const func of set_colors.listeners)
+		func();
 };
 
 set_colors.materials = [];
+set_colors.listeners = [];
 
 const use_theme = material => {
 	const colors = params.colors.current;
-	const color_key = Object.keys(colors).find(key => colors[key].getHex() == material.color.getHex());
+	const color_key = Object.keys(colors).find(key => material.color.equals(colors[key]));
 	set_colors.materials.push([material, color_key]);
 }
+
+const on_theme_change = func => set_colors.listeners.push(func);
 
 const color_query = matchMedia('(prefers-color-scheme: dark)');
 color_query.addEventListener('change', set_colors);
 set_colors(color_query);
 
-const line_material = new THREE.LineBasicMaterial({ linewidth: 1 * scale, color: params.colors.current.lines });
-use_theme(line_material);
+params.materials.can = new THREE.MeshStandardMaterial({ color: params.colors.current.can, flatShading: true });
+params.materials.chute = new THREE.MeshStandardMaterial({ color: params.colors.current.chute, flatShading: true, side: THREE.DoubleSide });
+params.materials.lines = new THREE.LineBasicMaterial({ color: params.colors.current.lines });
+
+use_theme(params.materials.can);
+use_theme(params.materials.chute);
+use_theme(params.materials.lines);
 
 const make = (geometry, material) => new THREE.Mesh(geometry, material);
 const zip = (a, b) => a.map((v, i) => [v, b[i]]);
@@ -112,7 +126,7 @@ const lines = zip(
 ).map(([top, bot]) => {
 	const ps = [bot.setY(params.can.height / 2), top.setY(params.chute.offset + params.chute.radius * Math.cos(params.chute.opening))];
 	const geom = new THREE.BufferGeometry().setFromPoints(ps);
-	return new THREE.Line(geom, line_material);
+	return new THREE.Line(geom, params.materials.lines);
 });
 
 const satellite = new THREE.Group();
