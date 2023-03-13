@@ -7,13 +7,14 @@ const params = {
 		factor: 1.2
 	},
 	colors: {
+		current: {},
 		dark: {
 			back: new THREE.Color(0x37538b),
 			lines: new THREE.Color(1, 1, 1)
 		},
 		light: {
 			back: new THREE.Color(1, 1, 1),
-			lines: new THREE.Color(0x2d4472)
+			lines: new THREE.Color(0, 0, 0)
 		}
 	},
 	materials: {
@@ -56,20 +57,33 @@ addEventListener('resize', () => {
 	renderer.setSize(canvas_dimen.width, canvas_dimen.height);
 });
 
-const line_material = new THREE.LineBasicMaterial({ linewidth: 1 * scale });
-const make = geometry => new THREE.LineSegments(new THREE.WireframeGeometry(geometry), line_material);
-const zip = (a, b) => a.map((v, i) => [v, b[i]]);
-
 const set_colors = query => {
 	const mode = query.matches ? 'dark' : 'light';
 
 	scene.background = params.colors[mode].back;
-	line_material.color = params.colors[mode].lines;
+	params.colors.current = params.colors[mode];
+
+	for (const [material, color_key] of set_colors.materials)
+		material.color = params.colors.current[color_key];
 };
+
+set_colors.materials = [];
+
+const use_theme = material => {
+	const colors = params.colors.current;
+	const color_key = Object.keys(colors).find(key => colors[key].getHex() == material.color.getHex());
+	set_colors.materials.push([material, color_key]);
+}
 
 const color_query = matchMedia('(prefers-color-scheme: dark)');
 color_query.addEventListener('change', set_colors);
 set_colors(color_query);
+
+const line_material = new THREE.LineBasicMaterial({ linewidth: 1 * scale, color: params.colors.current.lines });
+use_theme(line_material);
+
+const make = (geometry, material) => new THREE.Mesh(geometry, material);
+const zip = (a, b) => a.map((v, i) => [v, b[i]]);
 
 const generate_points = (n, r) => {
 	const points = [];
