@@ -11,8 +11,7 @@ body {
 
 	--back: #fff;
 	--back-nav: #eee;
-	--back-header: #eee;
-	--back-header-fade: #eee6;
+	--back-header: #ced6e5;
 	--back-footer: #eee;
 
 	--size-logo-min: 3rem;
@@ -27,8 +26,7 @@ body {
 
 		--back: #222;
 		--back-nav: #000;
-		--back-header: #000;
-		--back-header-fade: #0006;
+		--back-header: #293244;
 		--back-footer: #000;
 	}
 }
@@ -94,6 +92,7 @@ header {
 	padding: 2rem max(10vw, calc(50vw - 30ch));
 	font-size: clamp(1rem, 5vw, 1.2rem);
 	text-align: center;
+	background: var(--back-header);
 
 	height: 100vh;
 	display: flex;
