@@ -16,6 +16,10 @@ const params = {
 			lines: new THREE.Color(0x2d4472)
 		}
 	},
+	materials: {
+		can: new THREE.MeshStandardMaterial({ color: 0x2d4472, flatShading: true }),
+		chute: new THREE.MeshStandardMaterial({ color: 0xe5ddc0, flatShading: true, side: THREE.DoubleSide })
+	},
 	can: {
 		radius: 1,
 		height: 4
@@ -79,8 +83,12 @@ const generate_points = (n, r) => {
 	return points;
 };
 
-const can = make(new THREE.CylinderGeometry(params.can.radius, params.can.radius, params.can.height));
-const chute = make(new THREE.SphereGeometry(params.chute.radius, 32, 16, 0, 2 * Math.PI, 0, params.chute.opening));
+const can = make(
+	new THREE.CylinderGeometry(params.can.radius, params.can.radius, params.can.height, 8),
+	params.materials.can);
+const chute = make(
+	new THREE.SphereGeometry(params.chute.radius, 16, 16, 0, 2 * Math.PI, 0, params.chute.opening),
+	params.materials.chute);
 chute.position.y = params.chute.offset;
 
 const lines_origin = new THREE.Vector3(0, params.can.height / 2, 0);
@@ -90,7 +98,7 @@ const lines = zip(
 ).map(([top, bot]) => {
 	const ps = [bot.setY(params.can.height / 2), top.setY(params.chute.offset + params.chute.radius * Math.cos(params.chute.opening))];
 	const geom = new THREE.BufferGeometry().setFromPoints(ps);
-	return make(geom);
+	return new THREE.Line(geom, line_material);
 });
 
 const satellite = new THREE.Group();
@@ -101,7 +109,19 @@ const vert_extent = Math.abs(bbox.min.y) + Math.abs(bbox.max.y);
 const center = new THREE.Vector3();
 bbox.getCenter(center);
 
-scene.add(satellite);
+const ambient = new THREE.AmbientLight(0xffffff, 0.2);
+const point = new THREE.PointLight(0xeeeeff, 0.9);
+point.position.set(20, 30, 10);
+point.castShadows = true;
+
+for (const object of [can, chute, ...lines]) {
+	object.castShadow = true;
+	object.receiveShadow = true;
+}
+
+renderer.shadowMap.enabled = true;
+
+scene.add(satellite, ambient, point);
 camera.position.set(0, center.y, vert_extent * params.viewport.factor / Math.tan(params.viewport.fov));
 
 let t0 = null;
