@@ -172,7 +172,7 @@ const loop = t_now => {
 	const t = t_now - t0;
 
 	satellite.position.x = 3 * Math.sin(t / 1e3);
-	satellite.position.y = 0.5 * Math.cos(t / 1e3) + Math.max(0, 6e3 - t / 1e0) ** 2 / 1e6;
+	satellite.position.y = 0.5 * Math.cos(t / 1e3) + Math.max(0, 6.5e3 - t / 1e0) ** 2 / 1e6;
 
 	const k = t => Math.min(1, 1 - (1 - t / 2e4) ** 3);
 	const euler = new THREE.Euler(
