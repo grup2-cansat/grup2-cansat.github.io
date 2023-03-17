@@ -7,15 +7,26 @@ const params = {
 		factor: 1.2
 	},
 	colors: {
+		current: {},
 		dark: {
-			back: new THREE.Color(0x37538b),
-			lines: new THREE.Color(1, 1, 1)
+			back: new THREE.Color(0x293244),
+			lines: new THREE.Color(0xaaaaaa),
+			can: new THREE.Color(0x517acc),
+			chute: new THREE.Color(0xe5ddc0)
 		},
 		light: {
-			back: new THREE.Color(1, 1, 1),
-			lines: new THREE.Color(0x2d4472)
+			back: new THREE.Color(0xced6e5),
+			lines: new THREE.Color(0x888888),
+			can: new THREE.Color(0x9db9f2),
+			chute: new THREE.Color(0xe5dec3)
 		}
 	},
+	lights: {
+		current: [],
+		dark: [0.3, 0.6],
+		light: [0.6, 1]
+	},
+	materials: {},
 	can: {
 		radius: 1,
 		height: 4
@@ -52,20 +63,45 @@ addEventListener('resize', () => {
 	renderer.setSize(scale * canvas_dimen.width, scale * canvas_dimen.height);
 });
 
-const line_material = new THREE.LineBasicMaterial({ linewidth: 1 * scale });
-const make = geometry => new THREE.LineSegments(new THREE.WireframeGeometry(geometry), line_material);
-const zip = (a, b) => a.map((v, i) => [v, b[i]]);
-
 const set_colors = query => {
 	const mode = query.matches ? 'dark' : 'light';
 
 	scene.background = params.colors[mode].back;
-	line_material.color = params.colors[mode].lines;
+	params.colors.current = params.colors[mode];
+	params.lights.current = params.lights[mode];
+
+	for (const [material, color_key] of set_colors.materials)
+		material.color = params.colors.current[color_key];
+
+	for (const func of set_colors.listeners)
+		func();
 };
+
+set_colors.materials = [];
+set_colors.listeners = [];
+
+const use_theme = material => {
+	const colors = params.colors.current;
+	const color_key = Object.keys(colors).find(key => material.color.equals(colors[key]));
+	set_colors.materials.push([material, color_key]);
+}
+
+const on_theme_change = func => set_colors.listeners.push(func);
 
 const color_query = matchMedia('(prefers-color-scheme: dark)');
 color_query.addEventListener('change', set_colors);
 set_colors(color_query);
+
+params.materials.can = new THREE.MeshStandardMaterial({ color: params.colors.current.can, flatShading: true });
+params.materials.chute = new THREE.MeshStandardMaterial({ color: params.colors.current.chute, flatShading: true, side: THREE.DoubleSide });
+params.materials.lines = new THREE.LineBasicMaterial({ color: params.colors.current.lines });
+
+use_theme(params.materials.can);
+use_theme(params.materials.chute);
+use_theme(params.materials.lines);
+
+const make = (geometry, material) => new THREE.Mesh(geometry, material);
+const zip = (a, b) => a.map((v, i) => [v, b[i]]);
 
 const generate_points = (n, r) => {
 	const points = [];
@@ -79,8 +115,12 @@ const generate_points = (n, r) => {
 	return points;
 };
 
-const can = make(new THREE.CylinderGeometry(params.can.radius, params.can.radius, params.can.height));
-const chute = make(new THREE.SphereGeometry(params.chute.radius, 32, 16, 0, 2 * Math.PI, 0, params.chute.opening));
+const can = make(
+	new THREE.CylinderGeometry(params.can.radius, params.can.radius, params.can.height, 8),
+	params.materials.can);
+const chute = make(
+	new THREE.SphereGeometry(params.chute.radius, 16, 16, 0, 2 * Math.PI, 0, params.chute.opening),
+	params.materials.chute);
 chute.position.y = params.chute.offset;
 
 const lines_origin = new THREE.Vector3(0, params.can.height / 2, 0);
@@ -90,7 +130,7 @@ const lines = zip(
 ).map(([top, bot]) => {
 	const ps = [bot.setY(params.can.height / 2), top.setY(params.chute.offset + params.chute.radius * Math.cos(params.chute.opening))];
 	const geom = new THREE.BufferGeometry().setFromPoints(ps);
-	return make(geom);
+	return new THREE.Line(geom, params.materials.lines);
 });
 
 const satellite = new THREE.Group();
@@ -101,7 +141,27 @@ const vert_extent = Math.abs(bbox.min.y) + Math.abs(bbox.max.y);
 const center = new THREE.Vector3();
 bbox.getCenter(center);
 
-scene.add(satellite);
+const p1 = new THREE.PointLight(0xffffff, params.lights.current[0]);
+p1.position.set(20, -25, 20);
+p1.castShadows = true;
+
+const p2 = new THREE.PointLight(0xffffff, params.lights.current[1]);
+p2.position.set(-30, 35, 15);
+p2.castShadows = true;
+
+on_theme_change(() => {
+	p1.intensity = params.lights.current[0];
+	p2.intensity = params.lights.current[1];
+});
+
+for (const object of [can, chute, ...lines]) {
+	object.castShadow = true;
+	object.receiveShadow = true;
+}
+
+renderer.shadowMap.enabled = true;
+
+scene.add(satellite, p1, p2);
 camera.position.set(0, center.y, vert_extent * params.viewport.factor / Math.tan(params.viewport.fov));
 
 let t0 = null;
@@ -112,7 +172,7 @@ const loop = t_now => {
 	const t = t_now - t0;
 
 	satellite.position.x = 3 * Math.sin(t / 1e3);
-	satellite.position.y = 0.5 * Math.cos(t / 1e3) + Math.max(0, 6e3 - t / 1e0) ** 2 / 1e6;
+	satellite.position.y = 0.5 * Math.cos(t / 1e3) + Math.max(0, 6.5e3 - t / 1e0) ** 2 / 1e6;
 
 	const k = t => Math.min(1, 1 - (1 - t / 2e4) ** 3);
 	const euler = new THREE.Euler(
