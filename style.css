@@ -200,4 +200,9 @@ ul.faux {
 	gap: 1rem;
 }
 
-svg.icon { width: 1.5rem; fill: var(--text); }
+svg.icon {
+	width: 1.5rem;
+	fill: var(--text);
+	transition: fill .2s;
+}
+svg.icon:hover { fill: var(--text-dim); }
