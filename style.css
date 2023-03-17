@@ -61,14 +61,6 @@ nav.big {
 nav.big + main { margin-top: calc(.5rem + var(--size-logo)); }
 nav + main { margin-top: calc(.5rem + var(--size-logo)); }
 
-nav .nav-links {
-	list-style: none;
-	padding: 0;
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-}
-
 nav img {
 	height: var(--size-logo);
 	transition: height .4s;
@@ -193,3 +185,11 @@ button:hover::before { transform: scaleY(1); }
 li { margin-top: .5rem; }
 
 a { color-scheme: dark light; }
+
+ul.faux {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
