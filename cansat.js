@@ -38,7 +38,7 @@ document.querySelector('header').append(renderer.domElement);
 renderer.domElement.id = 'renderer-canvas';
 
 let canvas_dimen = renderer.domElement.getBoundingClientRect();
-const scale = 1;
+const scale = window.devicePixelRatio || 1;
 renderer.setSize(scale * canvas_dimen.width, scale * canvas_dimen.height);
 
 const scene = new THREE.Scene();
@@ -49,7 +49,7 @@ addEventListener('resize', () => {
 
 	camera.aspect = canvas_dimen.width / canvas_dimen.height;
 	camera.updateProjectionMatrix();
-	renderer.setSize(canvas_dimen.width, canvas_dimen.height);
+	renderer.setSize(scale * canvas_dimen.width, scale * canvas_dimen.height);
 });
 
 const line_material = new THREE.LineBasicMaterial({ linewidth: 1 * scale });
