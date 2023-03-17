@@ -155,6 +155,12 @@ img.ratio-16-9 {
 	object-fit: cover;
 }
 
+address {
+	border-left: 1px solid var(--text-dim);
+	padding-left: 1rem;
+	margin-left: 1rem;
+}
+
 button {
 	width: max-content;
 	font: inherit;
@@ -193,3 +199,5 @@ ul.faux {
 	align-items: center;
 	gap: 1rem;
 }
+
+svg.icon { width: 1.5rem; fill: var(--text); }
