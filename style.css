@@ -146,9 +146,9 @@ footer {
 	justify-content: space-between;
 }
 
-img { max-width: 100%; }
+img, picture, video { max-width: 100%; }
 figcaption { font-style: italic; margin-top: 0; }
-img.ratio-16-9 {
+:is(img, picture, video).ratio-16-9 {
 	aspect-ratio: 16 / 9;
 	object-fit: cover;
 }
