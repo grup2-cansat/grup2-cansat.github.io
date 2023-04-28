@@ -166,7 +166,6 @@ button {
 	padding: 1rem 2rem;
 
 	background: transparent;
-	color: inherit;
 	border: 1px solid currentcolor;
 	position: relative;
 }
@@ -176,9 +175,9 @@ button::before {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: calc(100% - 0px);
-	height: calc(100% - 0px);
-	backdrop-filter: invert(100%);
+	width: calc(100% + 1px);
+	height: 100%;
+	backdrop-filter: invert(1);
 	transform: scaleY(0);
 	transform-origin: bottom;
 	transition: all .5s;
