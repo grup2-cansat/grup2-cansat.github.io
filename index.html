@@ -60,7 +60,7 @@
 			<h1>Current progress on the project</h1>
 			<p>The CanSat project has reached its first milestone, with the participation of the <b>Balearic regional competition</b>! As we believe in transparency, we have shared all of our advances on the <a href="/projects.html">projects section</a> and on our various social media accounts.</p>
 			<p>Our first working prototype was launched the past 24th of May, at the <a href="https://osm.org/go/xUgAwTugg-" rel="noopener noreferrer">Son Albertí aerodrome</a> near Llucmajor, Mallorca. You can find all the details, as well as images and videos, at our <a href="/launch.html">launch day page</a>.</p>
-			<p>After spending the morning out in the field, testing the satellites, all teams moved to the campus of the <a href="https://www.uib.eu/" ref="noopener noreferrer">University of the Balearic Islans</a> to present our work. At the end of the day, the overall winner was announced (spoiler: it wasn't us) and prices were given to the participants.</p>
+			<p>After spending the morning out in the field, testing the satellites, all teams moved to the campus of the <a href="https://www.uib.eu/" ref="noopener noreferrer">University of the Balearic Islands</a> to present our work. At the end of the day, the overall winner was announced (spoiler: it wasn't us) and prices were given to the participants.</p>
 
 			<h2>Technical details</h2>
 			<p>We have drafted a preliminary report, in which we describe an outline of our both our future and past work. This report serves as general guidance for the project, helping us to carefully plan and execute the next steps.</p>
@@ -104,7 +104,7 @@
 				const s = clamp(size_min, size_max - overlap / em, size_max);
 				nav.style.setProperty('--size-logo', s + 'em');
 
-				if (window.scrollY >= header_height - nav_height)
+				if (overlap >= 0)
 					nav.classList.remove('big');
 				else
 					nav.classList.add('big');
