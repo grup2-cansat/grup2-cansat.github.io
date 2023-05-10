@@ -146,6 +146,11 @@ footer {
 	justify-content: space-between;
 }
 
+figure {
+	background: center url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="100"%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif"%3ELoading media...%3C/text%3E%3C/svg%3E');
+	background-repeat: no-repeat;
+}
+
 img, picture, video { max-width: 100%; }
 figcaption { font-style: italic; margin-top: 0; }
 :is(img, picture, video).ratio-16-9 {
